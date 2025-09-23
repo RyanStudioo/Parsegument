@@ -1,0 +1,24 @@
+
+def parse_string(string:str) -> list:
+    if not string: return []
+    opened_quotation = False
+    saved_index = 0
+    arguments = []
+    for idx, letter in enumerate(string):
+        if letter == '"' or letter == "'":
+            opened_quotation = not opened_quotation
+            if opened_quotation:
+                saved_index = idx+1
+            else:
+                arguments.append(string[saved_index:idx])
+                saved_index = idx + 1
+            continue
+        if letter == ' ' and not opened_quotation:
+            arguments.append(string[saved_index:idx])
+            saved_index = idx + 1
+            continue
+    if string[saved_index:]:
+        arguments.append(string[saved_index:])
+    return arguments
+
+
