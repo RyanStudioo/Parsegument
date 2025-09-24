@@ -21,4 +21,9 @@ def parse_string(string:str) -> list:
         arguments.append(string[saved_index:])
     return arguments
 
-
+def node_type(node:str):
+    if node[0] == "-":
+        if node[1] == "-":
+            return "Operand"
+        return "Flag"
+    return "Argument"
