@@ -33,6 +33,7 @@ class Parsegumenter:
                 continue
         if string[saved_index:]:
             arguments.append(string[saved_index:])
+        arguments = [i for i in arguments if i != ""]
         return arguments
 
     def add_child(self, child: Union[CommandGroup, Command]):
