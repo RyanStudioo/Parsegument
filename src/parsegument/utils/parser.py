@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 import re
+=======
+>>>>>>> 69282319c164e3f2bf48fabf38a42a335ff61017
 
 def parse_string(string:str) -> list:
     if not string: return []
@@ -22,6 +25,7 @@ def parse_string(string:str) -> list:
         arguments.append(string[saved_index:])
     return arguments
 
+<<<<<<< HEAD
 def node_type(node:str):
     if node[0] == "-":
         if node[1] == "-":
@@ -32,4 +36,6 @@ def node_type(node:str):
 def parse_operand(operand:str):
     value = re.search("=.*", operand)
     return value.group()[1:] if value else None
+=======
+>>>>>>> 69282319c164e3f2bf48fabf38a42a335ff61017
 
