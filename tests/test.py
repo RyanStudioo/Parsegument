@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from parsegument.CommandGroup import CommandGroup
 from parsegument.Command import Command
 from src.parsegument import Parsegumenter
@@ -15,3 +16,10 @@ parsegumenter.add_child(main_command)
 
 parsegumenter.execute("Main Sub foo yes")
 
+=======
+from parsegument import Parsegumenter
+
+command = "customCommand subGroup arg \"someone or something space\""
+test = Parsegumenter.parse_string(command)
+print(test)
+>>>>>>> 69282319c164e3f2bf48fabf38a42a335ff61017

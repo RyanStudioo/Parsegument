@@ -33,7 +33,10 @@ class Parsegumenter:
                 continue
         if string[saved_index:]:
             arguments.append(string[saved_index:])
+<<<<<<< HEAD
         arguments = [i for i in arguments if i != ""]
+=======
+>>>>>>> 69282319c164e3f2bf48fabf38a42a335ff61017
         return arguments
 
     def add_child(self, child: Union[CommandGroup, Command]):
@@ -49,5 +52,10 @@ class Parsegumenter:
         child_command = self.children.get(child_name)
         if not child_command:
             raise NodeDoesNotExist
+<<<<<<< HEAD
+=======
+        if len(child_command) > 1:
+            raise MultipleChildrenFound()
+>>>>>>> 69282319c164e3f2bf48fabf38a42a335ff61017
         child_command.execute(arguments)
 
