@@ -1,5 +1,17 @@
-from parsegument import Parsegumenter
+from parsegument.CommandGroup import CommandGroup
+from parsegument.Command import Command
+from src.parsegument import Parsegumenter
 
-command = "customCommand subGroup arg \'someone or something space\' --yes -v"
-test = Parsegumenter.parse_string(command)
-print(test)
+def foo(bar):
+    print(bar)
+
+parsegumenter = Parsegumenter()
+main_command = CommandGroup("Main")
+sub_command = CommandGroup("Sub")
+command = Command("foo", foo)
+main_command.add_child(sub_command)
+sub_command.add_child(command)
+parsegumenter.add_child(main_command)
+
+parsegumenter.execute("Main Sub foo yes")
+

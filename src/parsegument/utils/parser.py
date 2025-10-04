@@ -1,3 +1,4 @@
+import re
 
 def parse_string(string:str) -> list:
     if not string: return []
@@ -27,3 +28,8 @@ def node_type(node:str):
             return "Operand"
         return "Flag"
     return "Argument"
+
+def parse_operand(operand:str):
+    value = re.search("=.*", operand)
+    return value.group()[1:] if value else None
+

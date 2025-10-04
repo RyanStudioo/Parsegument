@@ -49,7 +49,5 @@ class Parsegumenter:
         child_command = self.children.get(child_name)
         if not child_command:
             raise NodeDoesNotExist
-        if len(child_command) > 1:
-            raise MultipleChildrenFound()
         child_command.execute(arguments)
 
