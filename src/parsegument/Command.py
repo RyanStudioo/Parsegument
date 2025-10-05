@@ -17,9 +17,9 @@ class Command(Node):
         if isinstance(arg, Argument):
             self.arguments["args"].append(arg)
         elif isinstance(arg, Operand):
-            self.arguments["kwargs"].append(arg)
+            self.arguments["kwargs"][arg.name] = arg
         elif isinstance(arg, Flag):
-            self.arguments["kwargs"].append(arg)
+            self.arguments["kwargs"][arg.name] = arg
 
     def execute(self, nodes:list[str]):
         args_length = len(self.arguments["args"])
