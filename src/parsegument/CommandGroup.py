@@ -22,4 +22,4 @@ class CommandGroup(Node):
         child = self.children.get(nodes[0])
         if not child:
             raise NodeDoesNotExist
-        child.execute(nodes[1:])
+        return child.execute(nodes[1:])
