@@ -1,4 +1,5 @@
-from typing import Union
+from typing import Union, Callable
+from inspect import signature
 from .Node import Node
 from .Command import Command
 from .error import NodeDoesNotExist
@@ -10,6 +11,12 @@ class CommandGroup(Node):
 
     def add_child(self, node:Union[Command, "CommandGroup"]) -> None:
         self.children[node.name] = node
+
+    def command(self, func: Callable):
+        def wrapper(*args, **kwargs):
+            return func(*args, **kwargs)
+        print(signature(func).parameters)
+        return wrapper
 
     def execute(self, nodes:list[str]):
         child = self.children.get(nodes[0])
