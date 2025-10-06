@@ -14,26 +14,30 @@ class Command(Node):
         self.executable = executable
 
     def add_node(self, arg: Union[Argument, Operand, Flag]) -> None:
-        if isinstance(arg, Argument):
+        if type(arg) == Argument:
             self.arguments["args"].append(arg)
-        elif isinstance(arg, Operand):
+        elif type(arg) == Operand:
             self.arguments["kwargs"][arg.name] = arg
-        elif isinstance(arg, Flag):
+        elif type(arg) == Flag:
             self.arguments["kwargs"][arg.name] = arg
 
     def execute(self, nodes:list[str]):
         args_length = len(self.arguments["args"])
-        args = nodes[:args_length-1]
+        args = nodes[:args_length]
         args = [convert_string_to_result(i, self.arguments["args"][idx].arg_type) for idx, i in enumerate(args)]
-        kwargs_strings = nodes[args_length-1:]
+        kwargs_strings = nodes[args_length:]
         kwargs = {}
+        print(args, kwargs_strings)
         for kwarg_string in kwargs_strings:
-            type_node = node_type(kwarg_string)
-            if type_node == "Flag":
+            type_of_node = node_type(kwarg_string)
+            if type_of_node == "Flag":
+                node_arguments = self.arguments["kwargs"][kwarg_string[1:]]
                 kwargs[kwarg_string[1:]] = True
                 continue
             else:
                 name, value = parse_operand(kwarg_string)
+                node_arguments = self.arguments["kwargs"][name]
+                value = convert_string_to_result(value, node_arguments.arg_type)
                 kwargs[name] = value
                 continue
         return self.executable(*args, **kwargs)
