@@ -2,7 +2,7 @@ from typing import Callable, Union
 from .Node import Node
 from .Arguments import Argument, Operand, Flag
 import inspect
-from .utils.parser import node_type, parse_operand
+from .utils.parser import node_type, parse_operand, convert_string_to_result
 
 class Command(Node):
     def __init__(self, name: str, executable: Callable) -> None:
@@ -23,20 +23,18 @@ class Command(Node):
 
     def execute(self, nodes:list[str]):
         args_length = len(self.arguments["args"])
-        args = nodes[:args_length+1]
-        for idx, arg_string in enumerate(args):
-            arguments_arg = self.arguments["args"][idx]
-            arg_type = arguments_arg.arg_type
-        kwargs_strings = nodes[args_length+1:]
+        args = nodes[:args_length-1]
+        args = [convert_string_to_result(i, self.arguments["args"][idx].arg_type) for idx, i in enumerate(args)]
+        kwargs_strings = nodes[args_length-1:]
         kwargs = {}
         for kwarg_string in kwargs_strings:
             type_node = node_type(kwarg_string)
             if type_node == "Flag":
-                kwargs[kwarg_string] = True
+                kwargs[kwarg_string[1:]] = True
                 continue
             else:
-                value = parse_operand(kwarg_string)
-                kwargs[kwarg_string] = value
+                name, value = parse_operand(kwarg_string)
+                kwargs[name] = value
                 continue
-        self.executable(*args, **kwargs)
+        return self.executable(*args, **kwargs)
 
