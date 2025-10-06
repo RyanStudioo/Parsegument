@@ -7,7 +7,7 @@ from .utils.parser import node_type, parse_operand
 class Command(Node):
     def __init__(self, name: str, executable: Callable) -> None:
         super().__init__(name)
-        self.arguments = {
+        self.arguments: Union[dict[str, list[Union[Argument, Operand, Flag, None]]], dict[str, dict[str, Union[Argument, Operand, Flag, None]]]] = {
             "args": [],
             "kwargs": {}
                           }
@@ -24,6 +24,9 @@ class Command(Node):
     def execute(self, nodes:list[str]):
         args_length = len(self.arguments["args"])
         args = nodes[:args_length+1]
+        for idx, arg_string in enumerate(args):
+            arguments_arg = self.arguments["args"][idx]
+            arg_type = arguments_arg.arg_type
         kwargs_strings = nodes[args_length+1:]
         kwargs = {}
         for kwarg_string in kwargs_strings:
