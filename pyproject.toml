@@ -1,17 +1,16 @@
 [build-system]
-requires = ["hatchling >= 1.26"]
-build-backend = "hatchling.build"
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [project]
-name = "Ryan Studio"
-version = "0.1.0"
+name = "Parsegument"
+version = "0.1.2"
 readme = "README.md"
-
-dynamic = ["version"]
+authors = [{ name = "Ryan Studio", email = "ryanstudiobusiness@gmail.com" }]
 requires-python = ">=3.8"
-
-license = "MIT"
+license = {text = "MIT"}
 keywords = ["parsegument", "parser", "argument parse", "parse argument"]
 
-["project.urls"]
+[project.urls]
 Repository = "https://github.com/RyanStudioo/Parsegument"
+
