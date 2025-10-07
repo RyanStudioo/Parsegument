@@ -27,7 +27,6 @@ class Command(Node):
         args = [convert_string_to_result(i, self.arguments["args"][idx].arg_type) for idx, i in enumerate(args)]
         kwargs_strings = nodes[args_length:]
         kwargs = {}
-        print(args, kwargs_strings)
         for kwarg_string in kwargs_strings:
             type_of_node = node_type(kwarg_string)
             if type_of_node == "Flag":
