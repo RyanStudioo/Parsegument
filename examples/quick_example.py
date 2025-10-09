@@ -1,8 +1,10 @@
 import parsegument as pg
 
+# function to execute
 def adder(num1: float, num2: float) -> float:
     return num1 + num2
 
+# Initialise Parsegumenter
 parser = pg.Parsegumenter()
 
 # Create a command group called pg
