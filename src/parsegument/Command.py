@@ -33,7 +33,7 @@ class Command(Node):
                 node_arguments = self.arguments["kwargs"][kwarg_string[1:]]
                 kwargs[kwarg_string[1:]] = True
                 continue
-            else:
+            elif type_of_node == "Operand":
                 name, value = parse_operand(kwarg_string)
                 node_arguments = self.arguments["kwargs"][name]
                 value = convert_string_to_result(value, node_arguments.arg_type)
