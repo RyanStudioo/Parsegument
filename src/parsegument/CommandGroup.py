@@ -19,7 +19,8 @@ class CommandGroup(Node):
 
         params = signature(func).parameters
         func_name = func.__name__
-        for param in params:
+        for key, param in params.items():
+            print(key, param)
             pass
 
         return wrapper
