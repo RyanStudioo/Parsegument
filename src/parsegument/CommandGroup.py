@@ -1,4 +1,5 @@
-from typing import Union, Callable
+import typing
+from typing import Union, Callable, get_origin
 from inspect import signature
 from .Node import Node
 from .Command import Command
@@ -15,7 +16,12 @@ class CommandGroup(Node):
     def command(self, func: Callable):
         def wrapper(*args, **kwargs):
             return func(*args, **kwargs)
-        print(signature(func).parameters)
+
+        params = signature(func).parameters
+        func_name = func.__name__
+        for param in params:
+            pass
+
         return wrapper
 
     def execute(self, nodes:list[str]):
