@@ -21,7 +21,7 @@ class Command(Node):
         elif type(arg) == Flag:
             self.arguments["kwargs"][arg.name] = arg
 
-    def execute(self, nodes:list[str]):
+    def _execute(self, nodes:list[str]):
         args_length = len(self.arguments["args"])
         args = nodes[:args_length]
         args = [convert_string_to_result(i, self.arguments["args"][idx].arg_type) for idx, i in enumerate(args)]

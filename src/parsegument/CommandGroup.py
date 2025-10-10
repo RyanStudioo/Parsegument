@@ -28,7 +28,7 @@ class CommandGroup(Node):
         print(command_object)
         return wrapper
 
-    def execute(self, nodes:list[str]):
+    def _execute(self, nodes:list[str]):
         child = self.children.get(nodes[0])
         if not child:
             raise NodeDoesNotExist
