@@ -2,23 +2,22 @@ from typing import Callable, Union
 from .Node import Node
 from .Arguments import Argument, Operand, Flag
 import inspect
+
+from .types.ArgDict import ArgDict
 from .utils.parser import node_type, parse_operand, convert_string_to_result
 
 class Command(Node):
+    arguments: ArgDict
+
     def __init__(self, name: str, executable: Callable) -> None:
         super().__init__(name)
-        self.arguments: Union[dict[str, list[Union[Argument, Operand, Flag, None]]], dict[str, dict[str, Union[Argument, Operand, Flag, None]]]] = {
-            "args": [],
-            "kwargs": {}
-                          }
+        self.arguments = {"args": [], "kwargs": {}}
         self.executable = executable
 
     def add_node(self, arg: Union[Argument, Operand, Flag]) -> None:
-        if type(arg) == Argument:
+        if isinstance(arg, Argument):
             self.arguments["args"].append(arg)
-        elif type(arg) == Operand:
-            self.arguments["kwargs"][arg.name] = arg
-        elif type(arg) == Flag:
+        else:
             self.arguments["kwargs"][arg.name] = arg
 
     def _execute(self, nodes:list[str]):
