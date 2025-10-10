@@ -42,8 +42,8 @@ class Parsegumenter:
         self.children[child.name] = child
         return True
 
-    def execute(self, string:str):
-        parsed = self.parse_string(string)
+    def execute(self, command:Union[str, list[str]]):
+        parsed = self.parse_string(command) if isinstance(command, str) else command
         child_name = parsed[0]
         arguments = parsed[1:]
         child_command = self.children.get(child_name)
