@@ -15,14 +15,15 @@ class Command(Node):
         self.executable = executable
 
     def add_node(self, arg: Union[Argument, Operand, Flag]) -> None:
-        if isinstance(arg, Argument):
+        if type(arg) == Argument:
             self.arguments["args"].append(arg)
         else:
             self.arguments["kwargs"][arg.name] = arg
 
-    def _execute(self, nodes:list[str]):
+    def execute(self, nodes:list[str]):
         args_length = len(self.arguments["args"])
         args = nodes[:args_length]
+        print(args_length)
         args = [convert_string_to_result(i, self.arguments["args"][idx].arg_type) for idx, i in enumerate(args)]
         kwargs_strings = nodes[args_length:]
         kwargs = {}

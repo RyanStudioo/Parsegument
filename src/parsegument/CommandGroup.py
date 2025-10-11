@@ -25,10 +25,9 @@ class CommandGroup(Node):
             converted = convert_param(param)
             command_object.add_node(converted)
         self.add_child(command_object)
-        print(command_object)
         return wrapper
 
-    def _execute(self, nodes:list[str]):
+    def execute(self, nodes:list[str]):
         child = self.children.get(nodes[0])
         if not child:
             raise NodeDoesNotExist

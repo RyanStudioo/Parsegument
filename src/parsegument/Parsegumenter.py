@@ -1,6 +1,7 @@
 from __future__ import annotations
 from typing import Union
 from .error import NodeDoesNotExist, ArgumentGroupNotFound, MultipleChildrenFound
+import shlex
 
 if annotations:
     from .Arguments import Argument
@@ -12,29 +13,6 @@ class Parsegumenter:
     def __init__(self) -> None:
         self.children = {}
 
-    @staticmethod
-    def parse_string(string: str) -> list:
-        if not string: return []
-        opened_quotation = False
-        saved_index = 0
-        arguments = []
-        for idx, letter in enumerate(string):
-            if letter == '"' or letter == "'":
-                opened_quotation = not opened_quotation
-                if opened_quotation:
-                    saved_index = idx + 1
-                else:
-                    arguments.append(string[saved_index:idx])
-                    saved_index = idx + 1
-                continue
-            if letter == ' ' and not opened_quotation:
-                arguments.append(string[saved_index:idx])
-                saved_index = idx + 1
-                continue
-        if string[saved_index:]:
-            arguments.append(string[saved_index:])
-        arguments = [i for i in arguments if i != ""]
-        return arguments
 
     def add_child(self, child: Union[CommandGroup, Command]):
         if child.name in [i.name for i in self.children]:
@@ -43,7 +21,7 @@ class Parsegumenter:
         return True
 
     def execute(self, command:Union[str, list[str]]):
-        parsed = self.parse_string(command) if isinstance(command, str) else command
+        parsed = shlex.split(command) if isinstance(command, str) else command
         child_name = parsed[0]
         arguments = parsed[1:]
         child_command = self.children.get(child_name)
