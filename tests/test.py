@@ -3,4 +3,5 @@ from typing import Union
 import parsegument
 from parsegument import Argument
 
-print(shlex.split("test \"['idk', 3]\" 4"))
+for i in shlex.split("test \"['idk', 3]\" 4"):
+    print(i)

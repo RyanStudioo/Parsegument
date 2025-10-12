@@ -23,14 +23,12 @@ class Command(Node):
     def execute(self, nodes:list[str]):
         args_length = len(self.arguments["args"])
         args = nodes[:args_length]
-        print(args_length)
         args = [convert_string_to_result(i, self.arguments["args"][idx].arg_type) for idx, i in enumerate(args)]
         kwargs_strings = nodes[args_length:]
         kwargs = {}
         for kwarg_string in kwargs_strings:
             type_of_node = node_type(kwarg_string)
             if type_of_node == "Flag":
-                node_arguments = self.arguments["kwargs"][kwarg_string[1:]]
                 kwargs[kwarg_string[1:]] = True
                 continue
             elif type_of_node == "Operand":
