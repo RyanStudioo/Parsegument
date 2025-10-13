@@ -1,9 +1,12 @@
 from __future__ import annotations
-from typing import Union, Callable
+from typing import Union, Callable, TYPE_CHECKING
 from inspect import signature
 from .utils.convert_params import convert_param
 from .Node import Node
 from .Command import Command
+
+if TYPE_CHECKING:
+    from .CommandGroup import CommandGroup
 
 
 class BaseGroup:
@@ -11,7 +14,7 @@ class BaseGroup:
         self.name = name
         self.children = {}
 
-    def add_child(self, child: Union[Node, "BaseGroup"]):
+    def add_child(self, child: Union[Command, CommandGroup]):
         if child.name in [i.name for i in self.children]:
             return False
         self.children[child.name] = child

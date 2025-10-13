@@ -4,11 +4,6 @@ from .BaseGroup import BaseGroup
 from .error import NodeDoesNotExist, ArgumentGroupNotFound, MultipleChildrenFound
 import shlex
 
-if annotations:
-    from .Arguments import Argument
-    from .CommandGroup import CommandGroup
-    from .Command import Command
-
 
 class Parsegumenter(BaseGroup):
     def __init__(self, name:str="", prefix:str="") -> None:
