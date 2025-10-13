@@ -11,12 +11,11 @@ class CommandGroup(BaseGroup):
     def _get_commands(cls):
         return cls._get_methods() - CommandGroup._get_methods()
 
-    def initiate(self):
+    def initialise(self):
         child_commands = list(self._get_commands())
         methods = [getattr(self, i) for i in child_commands]
         for method in methods:
             self.command(method)
-        return self
 
     def execute(self, nodes:list[str]):
         child = self.children.get(nodes[0])
