@@ -14,6 +14,10 @@ class BaseGroup:
         self.name = name
         self.children = {}
 
+    @classmethod
+    def _get_methods(cls):
+        return set([i for i in dir(cls) if i[0] != "_"])
+
     def add_child(self, child: Union[Command, CommandGroup]):
         if child.name in [i.name for i in self.children]:
             return False
@@ -32,3 +36,7 @@ class BaseGroup:
             command_object.add_node(converted)
         self.add_child(command_object)
         return wrapper
+
+    def execute(self, nodes: Union[str, list[str]]):
+        raise NotImplementedError
+

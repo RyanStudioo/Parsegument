@@ -1,10 +1,13 @@
-import parsegument
+import parsegument as pg
 from parsegument import CommandGroup
 
-parser = parsegument.Parsegumenter(name="test")
+class ChildGroup(CommandGroup):
+    def __init__(self):
+        super().__init__("ChildGroup")
 
-@parser.command
-def foo(bar:str):
-    return bar
+    def method_thing(self, test:str):
+        """Documentation"""
+        print(test)
+        pass
 
-print(parser.execute("test foo 'testing'"))
+print(ChildGroup.method_thing.__doc__)

@@ -7,6 +7,17 @@ class CommandGroup(BaseGroup):
         super().__init__(name)
         self.children = {}
 
+    @classmethod
+    def _get_commands(cls):
+        return cls._get_methods() - CommandGroup._get_methods()
+
+    def initiate(self):
+        child_commands = list(self._get_commands())
+        methods = [getattr(self, i) for i in child_commands]
+        for method in methods:
+            self.command(method)
+        return self
+
     def execute(self, nodes:list[str]):
         child = self.children.get(nodes[0])
         if not child:
