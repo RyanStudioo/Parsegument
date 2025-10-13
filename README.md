@@ -1,6 +1,6 @@
 <article>
     <h1>Parsegument Overview</h1>
-Read the docs at: [https://ryanstudio.dev/docs/parsegument](https://ryanstudio.dev/docs/parsegument)
+Read the docs at: https://ryanstudio.dev/docs/parsegument
     <section>
         <h2>What is Parsegument?</h2>
         <p>Parsegument is a Python Library for argument parsing and function execution. <br>
