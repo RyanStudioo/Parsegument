@@ -7,6 +7,9 @@ from .types.ArgDict import ArgDict
 from .utils.parser import node_type, parse_operand, convert_string_to_result
 
 class Command(Node):
+    """
+    Linked to a function via executable
+    """
     arguments: ArgDict
 
     def __init__(self, name: str, executable: Callable) -> None:
@@ -15,12 +18,14 @@ class Command(Node):
         self.executable = executable
 
     def add_node(self, arg: Union[Argument, Operand, Flag]) -> None:
+        """defines an argument, operand, or flag to the command"""
         if type(arg) == Argument:
             self.arguments["args"].append(arg)
         else:
             self.arguments["kwargs"][arg.name] = arg
 
     def execute(self, nodes:list[str]):
+        """Converts all arguments in nodes into its defined types, and executes the linked executable"""
         args_length = len(self.arguments["args"])
         args = nodes[:args_length]
         args = [convert_string_to_result(i, self.arguments["args"][idx].arg_type) for idx, i in enumerate(args)]

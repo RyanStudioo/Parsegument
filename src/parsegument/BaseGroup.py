@@ -19,12 +19,14 @@ class BaseGroup:
         return set([i for i in dir(cls) if i[0] != "_"])
 
     def add_child(self, child: Union[Command, CommandGroup]):
+        """Add a Command or CommandGroup as a child"""
         if child.name in [i.name for i in self.children]:
             return False
         self.children[child.name] = child
         return True
 
     def command(self, func: Callable):
+        """A Decorator that automatically creates a command, and adds it as a child"""
         def wrapper(*args, **kwargs):
             return func(*args, **kwargs)
 
