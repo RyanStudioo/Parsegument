@@ -2,7 +2,7 @@ import typing
 from typing import Union, Callable, get_origin
 from .Node import Node
 from .Command import Command
-from BaseGroup import BaseGroup
+from .BaseGroup import BaseGroup
 from .error import NodeDoesNotExist
 
 class CommandGroup(BaseGroup):

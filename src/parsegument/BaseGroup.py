@@ -2,17 +2,16 @@ from __future__ import annotations
 from typing import Union, Callable
 from inspect import signature
 from .utils.convert_params import convert_param
+from .Node import Node
+from .Command import Command
 
-if annotations:
-    from CommandGroup import CommandGroup
-    from Command import Command
 
 class BaseGroup:
     def __init__(self, name:str):
         self.name = name
         self.children = {}
 
-    def add_child(self, child: Union[CommandGroup, Command]):
+    def add_child(self, child: Union[Node, "BaseGroup"]):
         if child.name in [i.name for i in self.children]:
             return False
         self.children[child.name] = child
