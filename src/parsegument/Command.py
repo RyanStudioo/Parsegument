@@ -1,6 +1,6 @@
 from typing import Callable, Union
 from .Node import Node
-from .Arguments import Argument, Operand, Flag
+from .Parameters import Argument, Operand, Flag
 import inspect
 
 from .types.ArgDict import ArgDict

@@ -27,5 +27,5 @@ class CommandGroup(BaseGroup):
         """
         child = self.children.get(nodes[0])
         if not child:
-            raise NodeDoesNotExist
+            return None
         return child.execute(nodes[1:])

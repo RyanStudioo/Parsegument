@@ -33,7 +33,7 @@ class Parsegumenter(BaseGroup):
         arguments = parsed[1:]
         child_command = self.children.get(child_name)
         if not child_command:
-            raise NodeDoesNotExist
+            return None
         return child_command.execute(arguments)
 
 

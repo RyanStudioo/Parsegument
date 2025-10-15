@@ -1,6 +1,7 @@
 import typing
 import inspect
-from ..Arguments import Argument, Flag, Operand
+from ..Parameters import Argument, Flag, Operand
+
 
 def convert_params(params: typing.OrderedDict):
     pass

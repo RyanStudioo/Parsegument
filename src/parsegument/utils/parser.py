@@ -1,7 +1,7 @@
-
 import re
 from typing import Any
 import ast
+from ..error import ConversionTypeNotFound
 
 
 def parse_string(string:str) -> list:
@@ -44,5 +44,5 @@ def convert_string_to_result(string:str, arg_type: type) -> Any:
     elif arg_type == list or arg_type == tuple or arg_type == dict or arg_type == set:
         return ast.literal_eval(string)
     else:
-        return None
+        raise ConversionTypeNotFound(arg_type)
 
