@@ -32,20 +32,23 @@ class BaseGroup:
             return True
         return False
 
-
-    def command(self, func: Callable) -> Callable:
+    def command(self, name:str=None) -> Callable:
         """A Decorator that automatically creates a command, and adds it as a child"""
-        def wrapper(*args, **kwargs):
-            return func(*args, **kwargs)
+        def command_wrapper(func):
+            def wrapper(*args, **kwargs):
+                return func(*args, **kwargs)
 
-        params = signature(func).parameters
-        func_name = func.__name__
-        command_object = Command(name=func_name, executable=func)
-        for key, param in params.items():
-            converted = convert_param(param)
-            command_object.add_parameter(converted)
-        self.add_child(command_object)
-        return wrapper
+            params = signature(func).parameters
+            func_name = func.__name__
+            command_object = Command(name=func_name, executable=func)
+            for key, param in params.items():
+                converted = convert_param(param)
+                command_object.add_parameter(converted)
+            if name:
+                command_object.name = name
+            self.add_child(command_object)
+            return wrapper
+        return command_wrapper
 
     def execute(self, nodes: Union[str, list[str]]):
         raise NotImplementedError

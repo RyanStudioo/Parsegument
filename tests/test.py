@@ -1,7 +1,9 @@
-import shlex
-from typing import Union
-import parsegument
-from parsegument import Argument
+import parsegument as pg
 
-for i in shlex.split("test \"['idk', 3]\" 4"):
-    print(i)
+parser = pg.Parsegumenter()
+
+@parser.command(name="foo2")
+def foo(bar:int):
+    print(bar + 10)
+
+parser.run()

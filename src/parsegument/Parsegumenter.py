@@ -1,8 +1,9 @@
 from __future__ import annotations
-from typing import Union, Any
+from typing import Union, Any, Optional
 from .BaseGroup import BaseGroup
 from .error import NodeDoesNotExist, ArgumentGroupNotFound, MultipleChildrenFound
 import shlex
+import sys
 
 class Parsegumenter(BaseGroup):
     """
@@ -34,5 +35,11 @@ class Parsegumenter(BaseGroup):
         if not child_command:
             return None
         return child_command.execute(arguments)
+
+    def run(self) -> Optional[Any]:
+        args = sys.argv
+        if not len(args) > 1:
+            return None
+        return self.execute(args[1:])
 
 

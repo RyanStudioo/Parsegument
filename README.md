@@ -1,6 +1,7 @@
+# Parsegument
 [![Downloads](https://img.shields.io/pypi/dm/parsegument)](https://pypi.org/project/parsegument/)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
-# Parsegument
+
 An easy to use Argument Parsing and Command Routing library
 
 Read The Docs: https://ryanstudio.dev/docs/parsegument
