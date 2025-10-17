@@ -4,7 +4,6 @@ from .BaseGroup import BaseGroup
 from .error import NodeDoesNotExist, ArgumentGroupNotFound, MultipleChildrenFound
 import shlex
 
-
 class Parsegumenter(BaseGroup):
     """
     Child class of BaseGroup

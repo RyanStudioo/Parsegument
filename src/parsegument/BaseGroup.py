@@ -2,7 +2,6 @@ from __future__ import annotations
 from typing import Union, Callable, TYPE_CHECKING
 from inspect import signature
 from .utils.convert_params import convert_param
-from .Node import Node
 from .Command import Command
 
 if TYPE_CHECKING:
@@ -15,17 +14,26 @@ class BaseGroup:
         self.children = {}
 
     @classmethod
-    def _get_methods(cls):
+    def _get_methods(cls) -> set[str]:
         return set([i for i in dir(cls) if i[0] != "_"])
 
-    def add_child(self, child: Union[Command, CommandGroup]):
+    def add_child(self, child: Union[Command, CommandGroup]) -> bool:
         """Add a Command or CommandGroup as a child"""
         if child.name in [i.name for i in self.children]:
             return False
         self.children[child.name] = child
         return True
 
-    def command(self, func: Callable):
+    def remove_child(self, name:str):
+        """Remove a Command or CommandGroup"""
+        logged_children = self.children.copy()
+        self.children = [i for i in logged_children if i.name != name]
+        if logged_children != self.children:
+            return True
+        return False
+
+
+    def command(self, func: Callable) -> Callable:
         """A Decorator that automatically creates a command, and adds it as a child"""
         def wrapper(*args, **kwargs):
             return func(*args, **kwargs)
@@ -35,7 +43,7 @@ class BaseGroup:
         command_object = Command(name=func_name, executable=func)
         for key, param in params.items():
             converted = convert_param(param)
-            command_object.add_node(converted)
+            command_object.add_parameter(converted)
         self.add_child(command_object)
         return wrapper
 

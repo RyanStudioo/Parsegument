@@ -18,8 +18,8 @@ command = pg.Command(name="adder", executable=adder)
 main_command.add_child(command)
 
 # add the arguments to the command
-command.add_node(pg.Argument("num1", float))
-command.add_node(pg.Argument("num2", float))
+command.add_parameter(pg.Argument("num1", float))
+command.add_parameter(pg.Argument("num2", float))
 
 # command to be parsed
 command_string = "pg adder 10.3 20.4"

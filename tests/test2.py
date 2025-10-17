@@ -11,7 +11,7 @@ class ChildGroup(CommandGroup):
 
     def initialise(self):
         method_thing = pg.Command("method_thing", self.method_thing)
-        method_thing.add_node(pg.Argument("test", str))
+        method_thing.add_parameter(pg.Argument("test", str))
         self.add_child(method_thing)
 
 parser = pg.Parsegumenter()
