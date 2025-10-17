@@ -1,11 +1,8 @@
-from .Node import Node
-
-class Parameter(Node):
+class Parameter:
     """Base Parameter class"""
     def __init__(self, name: str, arg_type:type) -> None:
-        super().__init__(name)
+        self.name = name
         self.arg_type = arg_type
-
 
 class Argument(Parameter):
     """A Compulsory Argument"""

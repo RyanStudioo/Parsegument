@@ -1,30 +1,29 @@
-from typing import Callable, Union
-from .Node import Node
+from typing import Callable, Union, Any
 from .Parameters import Argument, Operand, Flag
 import inspect
 
 from .types.ArgDict import ArgDict
 from .utils.parser import node_type, parse_operand, convert_string_to_result
 
-class Command(Node):
+class Command:
     """
     Linked to a function via executable
     """
     arguments: ArgDict
 
     def __init__(self, name: str, executable: Callable) -> None:
-        super().__init__(name)
+        self.name = name
         self.arguments = {"args": [], "kwargs": {}}
         self.executable = executable
 
-    def add_node(self, arg: Union[Argument, Operand, Flag]) -> None:
+    def add_parameter(self, arg: Union[Argument, Operand, Flag]) -> None:
         """defines an argument, operand, or flag to the command"""
         if type(arg) == Argument:
             self.arguments["args"].append(arg)
         else:
             self.arguments["kwargs"][arg.name] = arg
 
-    def execute(self, nodes:list[str]):
+    def execute(self, nodes:list[str]) -> Any:
         """Converts all arguments in nodes into its defined types, and executes the linked executable"""
         args_length = len(self.arguments["args"])
         args = nodes[:args_length]
@@ -43,4 +42,3 @@ class Command(Node):
                 kwargs[name] = value
                 continue
         return self.executable(*args, **kwargs)
-

@@ -1,4 +1,4 @@
-
+from typing import Any
 from .BaseGroup import BaseGroup
 from .error import NodeDoesNotExist
 
@@ -8,10 +8,10 @@ class CommandGroup(BaseGroup):
         self.children = {}
 
     @classmethod
-    def _get_commands(cls):
+    def _get_commands(cls) -> set[str]:
         return cls._get_methods() - CommandGroup._get_methods()
 
-    def initialise(self):
+    def initialise(self) -> None:
         """
         Only use this if you are making a child class of CommandGroup
         This does the same thing as the @BaseGroup.command decorator, but does it for every custom method in the child class
@@ -21,7 +21,7 @@ class CommandGroup(BaseGroup):
         for method in methods:
             self.command(method)
 
-    def execute(self, nodes:list[str]):
+    def execute(self, nodes:list[str]) -> Any:
         """
         Checks if a child with the name of the first list item exists, then executes the child
         """
