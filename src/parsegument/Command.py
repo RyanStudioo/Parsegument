@@ -9,25 +9,26 @@ class Command:
     """
     Linked to a function via executable
     """
-    arguments: ArgDict
+    parameters: ArgDict
 
     def __init__(self, name: str, executable: Callable) -> None:
         self.name = name
-        self.arguments = {"args": [], "kwargs": {}}
+        self.parameters = {"args": {}, "kwargs": {}}
         self.executable = executable
 
     def add_parameter(self, arg: Union[Argument, Operand, Flag]) -> None:
         """defines an argument, operand, or flag to the command"""
         if type(arg) == Argument:
-            self.arguments["args"].append(arg)
+            self.parameters["args"][arg.name] = arg
         else:
-            self.arguments["kwargs"][arg.name] = arg
+            self.parameters["kwargs"][arg.name] = arg
 
     def execute(self, nodes:list[str]) -> Any:
         """Converts all arguments in nodes into its defined types, and executes the linked executable"""
-        args_length = len(self.arguments["args"])
+        args_length = len(self.parameters["args"])
         args = nodes[:args_length]
-        args = [convert_string_to_result(i, self.arguments["args"][idx].arg_type) for idx, i in enumerate(args)]
+        args = {name:args[idx] for idx, name in enumerate(self.parameters["args"].keys())}
+        args = [convert_string_to_result(value, self.parameters["args"][key].arg_type) for key, value in args.items()]
         kwargs_strings = nodes[args_length:]
         kwargs = {}
         for kwarg_string in kwargs_strings:
@@ -37,7 +38,7 @@ class Command:
                 continue
             elif type_of_node == "Operand":
                 name, value = parse_operand(kwarg_string)
-                node_arguments = self.arguments["kwargs"][name]
+                node_arguments = self.parameters["kwargs"][name]
                 value = convert_string_to_result(value, node_arguments.arg_type)
                 kwargs[name] = value
                 continue

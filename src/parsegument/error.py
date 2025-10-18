@@ -17,3 +17,11 @@ class MultipleChildrenFound(ParsegumentError):
 class ConversionTypeNotFound(ParsegumentError):
     def __init__(self, param_type) -> None:
         super().__init__(f"Attempted to convert string to {param_type}, but was not able to")
+
+class ParameterNotFound(ParsegumentError):
+    def __init__(self, name:str) -> None:
+        super().__init__(f"Parameter with name: {name} does not exist")
+
+class CommandNotFound(ParsegumentError):
+    def __init__(self, name:str) -> None:
+        super().__init__(f"Command with name: {name} does not exist")

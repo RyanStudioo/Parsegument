@@ -1,6 +1,7 @@
 from __future__ import annotations
 from typing import Union, Callable, TYPE_CHECKING
 from inspect import signature
+import functools
 from .utils.convert_params import convert_param
 from .Command import Command
 
@@ -26,10 +27,9 @@ class BaseGroup:
 
     def command(self, name:str=None) -> Callable:
         """A Decorator that automatically creates a command, and adds it as a child"""
-        def command_wrapper(func):
-            def wrapper(*args, **kwargs):
-                return func(*args, **kwargs)
 
+        def command_wrapper(func):
+            orig = getattr(func, "__wrapped__", func)
             params = signature(func).parameters
             func_name = func.__name__
             command_object = Command(name=func_name, executable=func)
@@ -39,7 +39,21 @@ class BaseGroup:
             if name:
                 command_object.name = name
             self.add_child(command_object)
+
+            @functools.wraps(func)
+            def wrapper(*args, **kwargs):
+                return func(*args, **kwargs)
+
+            new_params = getattr(func, "__parameters__", None) or getattr(orig, "__parameters__", None)
+            if new_params:
+                for arg in new_params["args"].values():
+                    command_object.parameters["args"][arg.name] = arg
+            wrapper.command = command_object
+            orig.command = command_object
+
+
             return wrapper
+
         return command_wrapper
 
     def execute(self, nodes: Union[str, list[str]]):

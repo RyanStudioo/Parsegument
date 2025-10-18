@@ -1,7 +1,7 @@
-from typing import Union, List, Dict, TypedDict
+from typing import Union, Dict, TypedDict
 
 ArgType = Union["Argument", "Operand", "Flag", None]
 
 class ArgDict(TypedDict):
-    args: List[ArgType]
+    args: Dict[str, ArgType]
     kwargs: Dict[str, ArgType]
