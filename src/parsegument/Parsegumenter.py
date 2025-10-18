@@ -37,6 +37,7 @@ class Parsegumenter(BaseGroup):
         return child_command.execute(arguments)
 
     def run(self) -> Optional[Any]:
+        """Reads arguments from the CLI and executes it"""
         args = sys.argv
         if not len(args) > 1:
             return None
