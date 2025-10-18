@@ -1,6 +1,6 @@
 import functools
 import inspect
-
+from typing import Optional
 from ..Parameters import Argument, Flag, Operand
 from ..error import ParameterNotFound, CommandNotFound
 
@@ -8,7 +8,7 @@ def check_if_param_exists(func, name):
     signature = inspect.signature(func)
     return name in signature.parameters
 
-def argument(name: str, arg_type: type):
+def argument(name: str, arg_type: Optional[type]=None):
     def decorator(func):
 
         @functools.wraps(func)
@@ -40,7 +40,7 @@ def flag(name: str):
         return wrapper
     return decorator
 
-def operand(name: str):
+def operand(name: str, arg_type: Optional[type]=None):
     def decorator(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
@@ -49,7 +49,7 @@ def operand(name: str):
             func.__parameters__ = {"args": {}, "kwargs": {}}
         if not check_if_param_exists(func, name):
             raise ParameterNotFound(name)
-        func.__parameters__["kwargs"][name] = Operand(name)
+        func.__parameters__["kwargs"][name] = Operand(name, arg_type)
         wrapper.__parameters__ = func.__parameters__
         return wrapper
     return decorator
