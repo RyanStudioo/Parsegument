@@ -48,6 +48,8 @@ class BaseGroup:
             if new_params:
                 for arg in new_params["args"].values():
                     command_object.parameters["args"][arg.name] = arg
+                for kwarg in new_params["kwargs"].values():
+                    command_object.parameters["kwargs"][kwarg.name] = kwarg
             wrapper.command = command_object
             orig.command = command_object
 

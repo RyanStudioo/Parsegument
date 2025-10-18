@@ -16,11 +16,40 @@ def argument(name: str, arg_type: type):
             return func(*args, **kwargs)
 
         if not hasattr(func, "__parameters__"):
-            func.__parameters__ = {"args": {}, "kwarg": {}}
+            func.__parameters__ = {"args": {}, "kwargs": {}}
         if not check_if_param_exists(func, name):
             raise ParameterNotFound(name)
         func.__parameters__["args"][name] = Argument(name, arg_type)
         wrapper.__parameters__ = func.__parameters__
 
+        return wrapper
+    return decorator
+
+def flag(name: str):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            return func(*args, **kwargs)
+        if not hasattr(func, "__parameters__"):
+            func.__parameters__ = {"args": {}, "kwargs": {}}
+        if not check_if_param_exists(func, name):
+            raise ParameterNotFound(name)
+        func.__parameters__["kwargs"][name] = Flag(name)
+        wrapper.__parameters__ = func.__parameters__
+
+        return wrapper
+    return decorator
+
+def operand(name: str):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            return func(*args, **kwargs)
+        if not hasattr(func, "__parameters__"):
+            func.__parameters__ = {"args": {}, "kwargs": {}}
+        if not check_if_param_exists(func, name):
+            raise ParameterNotFound(name)
+        func.__parameters__["kwargs"][name] = Operand(name)
+        wrapper.__parameters__ = func.__parameters__
         return wrapper
     return decorator
