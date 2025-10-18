@@ -24,14 +24,6 @@ class BaseGroup:
         self.children[child.name] = child
         return True
 
-    def remove_child(self, name:str):
-        """Remove a Command or CommandGroup"""
-        logged_children = self.children.copy()
-        self.children = [i for i in logged_children if i.name != name]
-        if logged_children != self.children:
-            return True
-        return False
-
     def command(self, name:str=None) -> Callable:
         """A Decorator that automatically creates a command, and adds it as a child"""
         def command_wrapper(func):
