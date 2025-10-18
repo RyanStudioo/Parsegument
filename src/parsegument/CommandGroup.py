@@ -3,8 +3,8 @@ from .BaseGroup import BaseGroup
 from .error import NodeDoesNotExist
 
 class CommandGroup(BaseGroup):
-    def __init__(self, name: str) -> None:
-        super().__init__(name)
+    def __init__(self, name: str, help:str="") -> None:
+        super().__init__(name, help)
         self.children = {}
 
     @classmethod

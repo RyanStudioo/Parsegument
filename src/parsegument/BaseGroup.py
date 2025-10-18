@@ -4,14 +4,15 @@ from inspect import signature
 import functools
 from .utils.convert_params import convert_param
 from .Command import Command
+from .Node import Node
 
 if TYPE_CHECKING:
     from .CommandGroup import CommandGroup
 
 
-class BaseGroup:
-    def __init__(self, name:str):
-        self.name = name
+class BaseGroup(Node):
+    def __init__(self, name:str, help=""):
+        super().__init__(name, help)
         self.children = {}
 
     @classmethod

@@ -1,18 +1,18 @@
 from typing import Callable, Union, Any
 from .Parameters import Argument, Operand, Flag
 import inspect
-
 from .types.ArgDict import ArgDict
 from .utils.parser import node_type, parse_operand, convert_string_to_result
+from .Node import Node
 
-class Command:
+class Command(Node):
     """
     Linked to a function via executable
     """
     parameters: ArgDict
 
-    def __init__(self, name: str, executable: Callable) -> None:
-        self.name = name
+    def __init__(self, name: str, executable: Callable, help: str="") -> None:
+        super().__init__(name, help)
         self.parameters = {"args": {}, "kwargs": {}}
         self.executable = executable
 

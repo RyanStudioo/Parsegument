@@ -10,8 +10,8 @@ class Parsegumenter(BaseGroup):
     Child class of BaseGroup
     Essentially acts as an extension of CommandGroup
     """
-    def __init__(self, name:str="", prefix:str="") -> None:
-        super().__init__(name)
+    def __init__(self, name: str="", prefix: str="", help: str="") -> None:
+        super().__init__(name, help)
         self.children = {}
         self.prefix = prefix
 
