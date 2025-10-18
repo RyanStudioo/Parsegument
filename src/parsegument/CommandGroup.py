@@ -20,12 +20,3 @@ class CommandGroup(BaseGroup):
         methods = [getattr(self, i) for i in child_commands]
         for method in methods:
             self.command(method)
-
-    def execute(self, nodes:list[str]) -> Any:
-        """
-        Checks if a child with the name of the first list item exists, then executes the child
-        """
-        child = self.children.get(nodes[0])
-        if not child:
-            return None
-        return child.execute(nodes[1:])

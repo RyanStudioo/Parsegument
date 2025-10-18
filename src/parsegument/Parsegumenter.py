@@ -29,12 +29,7 @@ class Parsegumenter(BaseGroup):
         parsed = shlex.split(command) if isinstance(command, str) else command
         if not self._check_valid(parsed): return None
         if self.name: parsed.pop(0)
-        child_name = parsed[0]
-        arguments = parsed[1:]
-        child_command = self.children.get(child_name)
-        if not child_command:
-            return None
-        return child_command.execute(arguments)
+        return self.forward(parsed)
 
     def run(self) -> Optional[Any]:
         """Reads arguments from the CLI and executes it"""

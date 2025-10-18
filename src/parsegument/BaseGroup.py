@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Union, Callable, TYPE_CHECKING
+from typing import Union, Callable, TYPE_CHECKING, Any
 from inspect import signature
 import functools
 from .utils.convert_params import convert_param
@@ -59,6 +59,9 @@ class BaseGroup(Node):
 
         return command_wrapper
 
-    def execute(self, nodes: Union[str, list[str]]):
-        raise NotImplementedError
+    def forward(self, nodes: list[str]) -> Any:
+        child = self.children.get(nodes[0])
+        if not child:
+            return None
+        return child.execute(nodes[1:])
 

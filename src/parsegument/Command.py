@@ -8,6 +8,8 @@ from .Node import Node
 class Command(Node):
     """
     Linked to a function via executable
+    Call flags using -flag
+    call operands using --operand=value
     """
     parameters: ArgDict
 
