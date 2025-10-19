@@ -8,7 +8,7 @@ def _check_if_param_exists(func: Callable, name: str) -> bool:
     signature = inspect.signature(func)
     return name in signature.parameters
 
-def argument(name: str, arg_type: Optional[type]=None) -> Callable:
+def argument(name: str, arg_type: Optional[type]=None, help: str=None) -> Callable:
     """
     Decorator function to modify an argument's information
     """
@@ -22,13 +22,13 @@ def argument(name: str, arg_type: Optional[type]=None) -> Callable:
             func.__parameters__ = {"args": {}, "kwargs": {}}
         if not _check_if_param_exists(func, name):
             raise ParameterNotFound(name)
-        func.__parameters__["args"][name] = Argument(name, arg_type)
+        func.__parameters__["args"][name] = Argument(name, arg_type, help)
         wrapper.__parameters__ = func.__parameters__
 
         return wrapper
     return decorator
 
-def flag(name: str) -> Callable:
+def flag(name: str, help: str=None) -> Callable:
     """
     Decorator function to modify a flag's information
     """
@@ -42,13 +42,13 @@ def flag(name: str) -> Callable:
             func.__parameters__ = {"args": {}, "kwargs": {}}
         if not _check_if_param_exists(func, name):
             raise ParameterNotFound(name)
-        func.__parameters__["kwargs"][name] = Flag(name)
+        func.__parameters__["kwargs"][name] = Flag(name, help)
         wrapper.__parameters__ = func.__parameters__
 
         return wrapper
     return decorator
 
-def operand(name: str, arg_type: Optional[type]=None) -> Callable:
+def operand(name: str, arg_type: Optional[type]=None, help: str=None) -> Callable:
     """
     Decorator function to modify an operand's information
     """
@@ -62,7 +62,7 @@ def operand(name: str, arg_type: Optional[type]=None) -> Callable:
             func.__parameters__ = {"args": {}, "kwargs": {}}
         if not _check_if_param_exists(func, name):
             raise ParameterNotFound(name)
-        func.__parameters__["kwargs"][name] = Operand(name, arg_type)
+        func.__parameters__["kwargs"][name] = Operand(name, arg_type, help)
         wrapper.__parameters__ = func.__parameters__
         return wrapper
     return decorator

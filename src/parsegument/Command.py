@@ -3,9 +3,9 @@ from .Parameters import Argument, Operand, Flag
 import inspect
 from .types.ArgDict import ArgDict
 from .utils.parser import node_type, parse_operand, convert_string_to_result
-from .Node import Node
+from .Node import Node, CommandNode
 
-class Command(Node):
+class Command(CommandNode):
     """
     Linked to a function via executable
     Call flags using -flag
@@ -18,6 +18,12 @@ class Command(Node):
         self.parameters = {"args": {}, "kwargs": {}}
         self.executable = executable
 
+    @property
+    def _get_help_messages(self) -> str:
+        items = list(self.parameters["args"].items()) + list(self.parameters["kwargs"].items())
+        max_len = max(len(key) for key, _ in items)
+        return "\n".join(f"{key.ljust(max_len + 2)}{value.help}" for key, value in items)
+
     def add_parameter(self, arg: Union[Argument, Operand, Flag]) -> None:
         """defines an argument, operand, or flag to the command"""
         if type(arg) == Argument:
@@ -25,8 +31,11 @@ class Command(Node):
         else:
             self.parameters["kwargs"][arg.name] = arg
 
-    def execute(self, nodes:list[str]) -> Any:
+    def forward(self, nodes:list[str]) -> Any:
         """Converts all arguments in nodes into its defined types, and executes the linked executable"""
+        if "-help" in nodes:
+            return f"{self.help}\n{self._get_help_messages}"
+
         args_length = len(self.parameters["args"])
         args = nodes[:args_length]
         args = {name:args[idx] for idx, name in enumerate(self.parameters["args"].keys())}

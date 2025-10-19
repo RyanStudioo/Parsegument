@@ -4,20 +4,25 @@ from inspect import signature
 import functools
 from .utils.convert_params import convert_param
 from .Command import Command
-from .Node import Node
+from .Node import CommandNode
 
 if TYPE_CHECKING:
     from .CommandGroup import CommandGroup
 
 
-class BaseGroup(Node):
-    def __init__(self, name:str, help=""):
+class BaseGroup(CommandNode):
+    def __init__(self, name:str, help: str=""):
         super().__init__(name, help)
-        self.children = {}
+        self.children: dict[str, Union[Command, CommandGroup]] = {}
 
     @classmethod
     def _get_methods(cls) -> set[str]:
         return set([i for i in dir(cls) if i[0] != "_"])
+
+    @property
+    def _get_help_messages(self) -> str:
+        max_len = max(len(key) for key, _ in self.children.items())
+        return "\n".join(f"{key.ljust(max_len + 2)}{value.help}" for key, value in self.children.items())
 
     def add_child(self, child: Union[Command, CommandGroup]) -> bool:
         """Add a Command or CommandGroup as a child"""
@@ -26,14 +31,14 @@ class BaseGroup(Node):
         self.children[child.name] = child
         return True
 
-    def command(self, name:str=None) -> Callable:
+    def command(self, name:str=None, help: str=None) -> Callable:
         """A Decorator that automatically creates a command, and adds it as a child"""
 
         def command_wrapper(func):
             orig = getattr(func, "__wrapped__", func)
             params = signature(func).parameters
             func_name = func.__name__
-            command_object = Command(name=func_name, executable=func)
+            command_object = Command(name=func_name, executable=func, help=help)
             for key, param in params.items():
                 converted = convert_param(param)
                 command_object.add_parameter(converted)
@@ -54,7 +59,6 @@ class BaseGroup(Node):
             wrapper.command = command_object
             orig.command = command_object
 
-
             return wrapper
 
         return command_wrapper
@@ -63,5 +67,8 @@ class BaseGroup(Node):
         child = self.children.get(nodes[0])
         if not child:
             return None
-        return child.execute(nodes[1:])
+        if nodes[1] == "-help":
+            return f"{self.help}\n{self._get_help_messages}"
+        return child.forward(nodes[1:])
+
 

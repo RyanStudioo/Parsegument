@@ -3,9 +3,6 @@ import inspect
 from ..Parameters import Argument, Flag, Operand
 
 
-def convert_params(params: typing.OrderedDict):
-    pass
-
 def convert_param(param:inspect.Parameter):
     name = param.name
     param_type = param.annotation
