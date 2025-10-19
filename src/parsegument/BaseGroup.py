@@ -22,11 +22,11 @@ class BaseGroup(CommandNode):
     @property
     def _get_help_messages(self) -> str:
         max_len = max(len(key) for key, _ in self.children.items())
-        return "\n".join(f"{key.ljust(max_len + 2)}{value.help}" for key, value in self.children.items())
+        return "\n".join(f"{key.ljust(max_len*2 + 2)}{value.help}" for key, value in self.children.items())
 
     def add_child(self, child: Union[Command, CommandGroup]) -> bool:
         """Add a Command or CommandGroup as a child"""
-        if child.name in [i.name for i in self.children]:
+        if child.name in [i.name for i in self.children.values()]:
             return False
         self.children[child.name] = child
         return True
@@ -65,10 +65,10 @@ class BaseGroup(CommandNode):
 
     def forward(self, nodes: list[str]) -> Any:
         child = self.children.get(nodes[0])
+        if nodes[0] == "-help":
+            return f"[{self.__class__.__name__}]\n{self.name}: {self.help}\n\n[Children]\n{self._get_help_messages}"
         if not child:
             return None
-        if nodes[1] == "-help":
-            return f"{self.help}\n{self._get_help_messages}"
         return child.forward(nodes[1:])
 
 

@@ -22,7 +22,7 @@ class Command(CommandNode):
     def _get_help_messages(self) -> str:
         items = list(self.parameters["args"].items()) + list(self.parameters["kwargs"].items())
         max_len = max(len(key) for key, _ in items)
-        return "\n".join(f"{key.ljust(max_len + 2)}{value.help}" for key, value in items)
+        return "\n".join(f"{key.ljust(max_len*2 + 2)}{value.help}" for key, value in items)
 
     def add_parameter(self, arg: Union[Argument, Operand, Flag]) -> None:
         """defines an argument, operand, or flag to the command"""
@@ -34,7 +34,7 @@ class Command(CommandNode):
     def forward(self, nodes:list[str]) -> Any:
         """Converts all arguments in nodes into its defined types, and executes the linked executable"""
         if "-help" in nodes:
-            return f"{self.help}\n{self._get_help_messages}"
+            return f"[Command]\n{self.name}: {self.help}\n\n[Parameters]\n{self._get_help_messages}"
 
         args_length = len(self.parameters["args"])
         args = nodes[:args_length]
