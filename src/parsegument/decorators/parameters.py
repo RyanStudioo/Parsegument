@@ -8,7 +8,7 @@ def _check_if_param_exists(func: Callable, name: str) -> bool:
     signature = inspect.signature(func)
     return name in signature.parameters
 
-def argument(name: str, arg_type: Optional[type]=None, help: str=None) -> Callable:
+def argument(name: str, arg_type: type=str, help: str=None) -> Callable:
     """
     Decorator function to modify an argument's information
     """
@@ -48,7 +48,7 @@ def flag(name: str, help: str=None) -> Callable:
         return wrapper
     return decorator
 
-def operand(name: str, arg_type: Optional[type]=None, help: str=None) -> Callable:
+def operand(name: str, arg_type: type=str, help: str=None) -> Callable:
     """
     Decorator function to modify an operand's information
     """

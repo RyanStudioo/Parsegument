@@ -33,7 +33,8 @@ class Parsegumenter(BaseGroup):
         if value and "-help" in parsed:
             parsed = shlex.split(command) if isinstance(command, str) else command
             command_string = " ".join(parsed[:-1])
-            return f"Usage: {command_string} \n\n{value}"
+            value = f"Usage: {command_string} \n\n{value}"
+            print(value)
         return value
 
     def run(self) -> Optional[Any]:
