@@ -4,7 +4,7 @@ class Parameter(Node):
     """Base Parameter class"""
     def __init__(self, name: str, arg_type: type, help: str="") -> None:
         super().__init__(name, help)
-        self.arg_type = arg_type
+        self.arg_type = arg_type or str
 
 class Argument(Parameter):
     """A Compulsory Argument"""
