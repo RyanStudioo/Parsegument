@@ -4,7 +4,6 @@
 
 Parsegument is a python package for creating CLIs and adding text-based function execution for other applications!.
 
-
 Read The Docs: https://ryanstudio.dev/docs/parsegument
 
 ## Installation
@@ -26,4 +25,6 @@ def foo(bar:str):
 
 parser.execute("group1 foo bar_string") # Execute string
 ```
-
+```
+>>> bar_string
+```
