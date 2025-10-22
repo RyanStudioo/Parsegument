@@ -24,12 +24,12 @@ class Command(CommandNode):
         max_len = max(len(key) for key, _ in items)
         return "\n".join(f"{key.ljust(max_len*2 + 2)}{value.help}" for key, value in items)
 
-    def add_parameter(self, arg: Union[Argument, Operand, Flag]) -> None:
+    def add_parameter(self, param: Union[Argument, Operand, Flag]) -> None:
         """defines an argument, operand, or flag to the command"""
-        if type(arg) == Argument:
-            self.parameters["args"][arg.name] = arg
+        if type(param) == Argument:
+            self.parameters["args"][param.name] = param
         else:
-            self.parameters["kwargs"][arg.name] = arg
+            self.parameters["kwargs"][param.name] = param
 
     def forward(self, nodes:list[str]) -> Any:
         """Converts all arguments in nodes into its defined types, and executes the linked executable"""
