@@ -39,7 +39,7 @@ class Command(CommandNode):
         args_length = len(self.parameters["args"])
         args = nodes[:args_length]
         args = {name:args[idx] for idx, name in enumerate(self.parameters["args"].keys())}
-        args = [convert_string_to_result(value, self.parameters["args"][key].arg_type) for key, value in args.items()]
+        args = [convert_string_to_result(value, self.parameters["args"][key].param_type) for key, value in args.items()]
         kwargs_strings = nodes[args_length:]
         kwargs = {}
         for kwarg_string in kwargs_strings:
@@ -50,7 +50,7 @@ class Command(CommandNode):
             elif type_of_node == "Operand":
                 name, value = parse_operand(kwarg_string)
                 node_arguments = self.parameters["kwargs"][name]
-                value = convert_string_to_result(value, node_arguments.arg_type)
+                value = convert_string_to_result(value, node_arguments.param_type)
                 kwargs[name] = value
                 continue
         return self.executable(*args, **kwargs)
