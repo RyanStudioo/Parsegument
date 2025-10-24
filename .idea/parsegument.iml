@@ -2,13 +2,13 @@
 <module type="PYTHON_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
-<<<<<<< HEAD
-      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
-=======
->>>>>>> 69282319c164e3f2bf48fabf38a42a335ff61017
-      <excludeFolder url="file://$MODULE_DIR$/.venv" />
+      <sourceFolder url="file://$MODULE_DIR$/src/parsegument" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.12 (parsegument)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.13" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+  <component name="PyDocumentationSettings">
+    <option name="format" value="PLAIN" />
+    <option name="myDocStringFormat" value="Plain" />
   </component>
 </module>

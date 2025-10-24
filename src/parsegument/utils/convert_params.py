@@ -9,7 +9,7 @@ def convert_param(param:inspect.Parameter):
     default = param.default
     arg_type = identify_type(param_type, default)
     if arg_type != Flag:
-        final = arg_type(name=name, arg_type=param_type)
+        final = arg_type(name=name, param_type=param_type)
         return final
     else:
         return Flag(name=name)

@@ -9,7 +9,7 @@ description = "Parsegument is a python package for creating CLIs and adding text
 readme = "README.md"
 authors = [{ name = "Ryan Studio", email = "ryanstudiobusiness@gmail.com" }]
 requires-python = ">=3.11"
-license = {text = "MIT"}
+license-files = []
 keywords = ["parsegument", "parser", "argument parse", "parse"]
 
 [project.urls]
