@@ -2,15 +2,14 @@ from .Node import Node
 
 class Parameter(Node):
     """Base Parameter class"""
-    def __init__(self, name: str, arg_type: type, help: str="") -> None:
+    def __init__(self, name: str, param_type: type, help: str= "") -> None:
         super().__init__(name, help)
-        self.arg_type = arg_type or str
+        self.param_type = param_type or str
 
 class Argument(Parameter):
     """A Compulsory Argument"""
-    def __init__(self, name: str, arg_type: type=str, help: str="") -> None:
-        super().__init__(name, arg_type, help)
-        self.arg_type = arg_type
+    def __init__(self, name: str, param_type: type=str, help: str= "") -> None:
+        super().__init__(name, param_type, help)
 
 class Flag(Parameter):
     """An optional boolean kwarg"""
@@ -19,6 +18,6 @@ class Flag(Parameter):
 
 class Operand(Parameter):
     """Any keyword Argument"""
-    def __init__(self, name: str, arg_type:type=str, help: str="") -> None:
-        super().__init__(name, arg_type, help)
+    def __init__(self, name: str, param_type:type=str, help: str= "") -> None:
+        super().__init__(name, param_type, help)
 
