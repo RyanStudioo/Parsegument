@@ -18,4 +18,4 @@ def foo(bar: str):
 def foo2(bar: str):
     print(bar)
 
-parser.execute("Parsegument group foo 10")
+parser.execute("Parsegument group -h")
