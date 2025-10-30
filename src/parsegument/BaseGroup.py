@@ -14,6 +14,7 @@ class BaseGroup(CommandNode):
     def __init__(self, name:str, help: str=""):
         super().__init__(name, help)
         self.children: dict[str, Union[Command, CommandGroup]] = {}
+        self._on_call = []
 
     @classmethod
     def _get_methods(cls) -> set[str]:
@@ -23,6 +24,10 @@ class BaseGroup(CommandNode):
     def _get_help_messages(self) -> str:
         max_len = max(len(key) for key, _ in self.children.items())
         return "\n".join(f"{key.ljust(max_len*2 + 2)}{value.help}" for key, value in self.children.items())
+
+    def _execute_on_calls(self):
+        for command in self._on_call:
+            command()
 
     def add_child(self, child: Union[Command, CommandGroup]) -> bool:
         """Add a Command or CommandGroup as a child"""
@@ -63,10 +68,21 @@ class BaseGroup(CommandNode):
 
         return command_wrapper
 
+    def on_call(self, func: Callable) -> Callable:
+        """Calls a function when the command is used"""
+
+        if func not in self._on_call:
+            self._on_call.append(func)
+
+        def command_wrapper(*args, **kwargs):
+            return func(*args, **kwargs)
+        return command_wrapper
+
     def forward(self, nodes: list[str]) -> Any:
         child = self.children.get(nodes[0])
         if nodes[0] == "-help":
             return f"[{self.__class__.__name__}]\n{self.name}: {self.help}\n\n[Children]\n{self._get_help_messages}"
+        self._execute_on_calls()
         if not child:
             return None
         return child.forward(nodes[1:])

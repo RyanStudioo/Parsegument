@@ -4,6 +4,10 @@ parser = pg.Parsegumenter(name="Parsegument", help="Base Command Group")
 group = pg.CommandGroup(name="group", help="another group")
 parser.add_child(group)
 
+@group.on_call
+def group_call():
+    print("group_call")
+
 @group.command(name="foo", help="prints the argument")
 @pg.argument("bar", help="string to print out")
 def foo(bar: str):

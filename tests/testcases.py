@@ -7,6 +7,7 @@ parser = pg.Parsegumenter()
 group = pg.CommandGroup("test")
 parser.add_child(group)
 
+
 @group.command()
 def check_type(foo: str, bar: str, test: int=1, test2: float=2.0, flag:bool=False):
     print(f"foo: {foo}\nbar: {bar}\ntest: {test}\ntest2: {test2}\nflag: {flag}\n")
