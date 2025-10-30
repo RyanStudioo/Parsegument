@@ -1,9 +1,11 @@
+from typing import Callable
+from string import Template
 
-
-class HelpMessageFormatter:
+class HelpFormatter:
     triggers = ["-help", "--help", "-h"]
-    def __init__(self):
-        pass
+
+    def __init__(self, schema: str):
+        self.schema = schema
 
     @classmethod
     def is_help_message(cls, nodes: list[str]):

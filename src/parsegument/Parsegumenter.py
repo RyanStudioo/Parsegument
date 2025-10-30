@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import Union, Any, Optional
 from .BaseGroup import BaseGroup
-from .HelpMessageFormatter import HelpMessageFormatter
+from .formatting import HelpFormatter
 from .error import NodeDoesNotExist, ArgumentGroupNotFound, MultipleChildrenFound
 import shlex
 import sys
@@ -31,7 +31,7 @@ class Parsegumenter(BaseGroup):
         if not self._check_valid(parsed): return None
         if self.name: parsed.pop(0)
         value = self.forward(parsed)
-        if value and HelpMessageFormatter.is_help_message(parsed):
+        if value and HelpFormatter.is_help_message(parsed):
             parsed = shlex.split(command) if isinstance(command, str) else command
             command_string = " ".join(parsed[:-1])
             value = f"Usage: {command_string} \n\n{value}"

@@ -3,7 +3,7 @@ from typing import Union, Callable, TYPE_CHECKING, Any
 from inspect import signature
 import functools
 
-from .HelpMessageFormatter import HelpMessageFormatter
+from .formatting import HelpFormatter
 from .utils.convert_params import convert_param
 from .Command import Command
 from .Node import CommandNode
@@ -82,9 +82,9 @@ class BaseGroup(CommandNode):
 
     def forward(self, nodes: list[str]) -> Any:
         child = self.children.get(nodes[0])
-        if HelpMessageFormatter.first_node_is_help(nodes):
+        if HelpFormatter.first_node_is_help(nodes):
             return f"[{self.__class__.__name__}]\n{self.name}: {self.help}\n\n[Children]\n{self._get_help_messages}"
-        if not HelpMessageFormatter.is_help_message(nodes):
+        if not HelpFormatter.is_help_message(nodes):
             self._execute_on_calls()
         if not child:
             return None
