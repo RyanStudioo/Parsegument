@@ -1,6 +1,10 @@
 from __future__ import annotations
 from typing import Union, Any, Optional
+
+from .Command import Command
 from .BaseGroup import BaseGroup
+from .Node import CommandNode
+from .Parameters import Parameter
 from .formatting import HelpFormatter
 from .error import NodeDoesNotExist, ArgumentGroupNotFound, MultipleChildrenFound
 import shlex
@@ -24,6 +28,21 @@ class Parsegumenter(BaseGroup):
         if self.name and first != self.name: return False
         else: return True
 
+    @property
+    def schema(self) -> dict:
+        def iterate(node: Union[CommandNode]):
+            if isinstance(node, BaseGroup):
+                return {key: iterate(value) for key, value in node.children.items()}
+            elif isinstance(node, Command):
+                copy = node.parameters["args"].copy()
+                copy.update(node.parameters["kwargs"])
+                return {key: value.param_type for key, value in copy.items()}
+            elif isinstance(node, Parameter):
+                return {node.name: node.param_type}
+            return None
+
+        return iterate(self)
+
     def execute(self, command:Union[str, list[str]]) -> Union[Any, None]:
         """Checks if a child with the name of the first list item exists, then executes the child
         It will also automatically check if it is valid with the prefix and name"""
@@ -44,5 +63,7 @@ class Parsegumenter(BaseGroup):
         if not len(args) > 1:
             return None
         return self.execute(args[1:])
+
+
 
 
