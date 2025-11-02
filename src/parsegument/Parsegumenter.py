@@ -37,8 +37,6 @@ class Parsegumenter(BaseGroup):
                 copy = node.parameters["args"].copy()
                 copy.update(node.parameters["kwargs"])
                 return {key: value.param_type for key, value in copy.items()}
-            elif isinstance(node, Parameter):
-                return {node.name: node.param_type}
             return None
 
         return iterate(self)
