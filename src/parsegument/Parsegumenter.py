@@ -1,6 +1,11 @@
 from __future__ import annotations
 from typing import Union, Any, Optional
+
+from .Command import Command
 from .BaseGroup import BaseGroup
+from .Node import CommandNode
+from .Parameters import Parameter
+from .formatting import HelpFormatter
 from .error import NodeDoesNotExist, ArgumentGroupNotFound, MultipleChildrenFound
 import shlex
 import sys
@@ -23,6 +28,19 @@ class Parsegumenter(BaseGroup):
         if self.name and first != self.name: return False
         else: return True
 
+    @property
+    def schema(self) -> dict:
+        def iterate(node: Union[CommandNode]):
+            if isinstance(node, BaseGroup):
+                return {key: iterate(value) for key, value in node.children.items()}
+            elif isinstance(node, Command):
+                copy = node.parameters["args"].copy()
+                copy.update(node.parameters["kwargs"])
+                return {key: value.param_type for key, value in copy.items()}
+            return None
+
+        return iterate(self)
+
     def execute(self, command:Union[str, list[str]]) -> Union[Any, None]:
         """Checks if a child with the name of the first list item exists, then executes the child
         It will also automatically check if it is valid with the prefix and name"""
@@ -30,7 +48,7 @@ class Parsegumenter(BaseGroup):
         if not self._check_valid(parsed): return None
         if self.name: parsed.pop(0)
         value = self.forward(parsed)
-        if value and "-help" in parsed:
+        if value and HelpFormatter.is_help_message(parsed):
             parsed = shlex.split(command) if isinstance(command, str) else command
             command_string = " ".join(parsed[:-1])
             value = f"Usage: {command_string} \n\n{value}"
@@ -43,5 +61,7 @@ class Parsegumenter(BaseGroup):
         if not len(args) > 1:
             return None
         return self.execute(args[1:])
+
+
 
 

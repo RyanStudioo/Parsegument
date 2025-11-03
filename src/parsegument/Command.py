@@ -4,6 +4,7 @@ import inspect
 from .types.ArgDict import ArgDict
 from .utils.parser import node_type, parse_operand, convert_string_to_result
 from .Node import Node, CommandNode
+from .formatting import HelpFormatter
 
 class Command(CommandNode):
     """
@@ -33,7 +34,7 @@ class Command(CommandNode):
 
     def forward(self, nodes:list[str]) -> Any:
         """Converts all arguments in nodes into its defined types, and executes the linked executable"""
-        if "-help" in nodes:
+        if HelpFormatter.is_help_message(nodes):
             return f"[Command]\n{self.name}: {self.help}\n\n[Parameters]\n{self._get_help_messages}"
 
         args_length = len(self.parameters["args"])
