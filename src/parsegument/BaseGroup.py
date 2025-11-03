@@ -80,8 +80,10 @@ class BaseGroup(CommandNode):
             return func(*args, **kwargs)
         return command_wrapper
 
-    def forward(self, nodes: list[str]) -> Any:
-        child = self.children.get(nodes[0])
+    def forward(self, nodes: dict[str, list[str]]) -> Any:
+        path = nodes["path"]
+        exec_path = nodes["exec_path"]
+        child = self.children.get(exec_path[0])
         if HelpFormatter.first_node_is_help(nodes):
             return f"[{self.__class__.__name__}]\n{self.name}: {self.help}\n\n[Children]\n{self._get_help_messages}"
         if not HelpFormatter.is_help_message(nodes):

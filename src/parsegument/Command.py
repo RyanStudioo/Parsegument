@@ -32,16 +32,17 @@ class Command(CommandNode):
         else:
             self.parameters["kwargs"][param.name] = param
 
-    def forward(self, nodes:list[str]) -> Any:
+    def forward(self, nodes:dict[str, list[str]]) -> Any:
         """Converts all arguments in nodes into its defined types, and executes the linked executable"""
         if HelpFormatter.is_help_message(nodes):
             return f"[Command]\n{self.name}: {self.help}\n\n[Parameters]\n{self._get_help_messages}"
-
+        path = nodes["path"]
+        exec_path = nodes["exec_path"]
         args_length = len(self.parameters["args"])
-        args = nodes[:args_length]
+        args = exec_path[:args_length]
         args = {name:args[idx] for idx, name in enumerate(self.parameters["args"].keys())}
         args = [convert_string_to_result(value, self.parameters["args"][key].param_type) for key, value in args.items()]
-        kwargs_strings = nodes[args_length:]
+        kwargs_strings = exec_path[args_length:]
         kwargs = {}
         for kwarg_string in kwargs_strings:
             type_of_node = node_type(kwarg_string)

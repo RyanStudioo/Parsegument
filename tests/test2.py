@@ -1,5 +1,5 @@
 from typing import Optional, Any
-
+from pprint import pprint
 import parsegument as pg
 from parsegument import CommandGroup
 
@@ -16,10 +16,18 @@ class ChildGroup(CommandGroup):
             return test + 2
         return None
 
+    @staticmethod
+    def method_thing2(testing:str) -> Optional[Any]:
+        if type(testing) == str:
+            return "this is a string"
+        else:
+            return "WTF IS THIS"
 
-parser = pg.Parsegumenter()
+
+
+parser = pg.Parsegumenter(prefix="!", name="test")
 group = ChildGroup()
 group.initialise()
 parser.add_child(group)
 print(parser.execute("ChildGroup method_thing 10.5"))
-print(parser.schema)
+pprint(parser.schema)
