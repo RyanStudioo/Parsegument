@@ -18,6 +18,13 @@ class BaseGroup(CommandNode):
         self.children: dict[str, Union[Command, CommandGroup]] = {}
         self._on_call = []
 
+    def __len__(self):
+        return len(self.children)
+
+    @property
+    def length(self):
+        return self.__len__()
+
     @classmethod
     def _get_methods(cls) -> set[str]:
         return set([i for i in dir(cls) if i[0] != "_"])

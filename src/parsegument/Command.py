@@ -19,6 +19,13 @@ class Command(CommandNode):
         self.parameters = {"args": {}, "kwargs": {}}
         self.executable = executable
 
+    def __len__(self):
+        return len(self.parameters["args"]) + len(self.parameters["kwargs"])
+
+    @property
+    def length(self):
+        return self.__len__()
+
     @property
     def _get_help_messages(self) -> str:
         items = list(self.parameters["args"].items()) + list(self.parameters["kwargs"].items())
