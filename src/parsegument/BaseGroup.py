@@ -91,13 +91,12 @@ class BaseGroup(CommandNode):
         path = nodes["path"]
         exec_path = nodes["exec_path"]
         child = self.children.get(exec_path[0])
-        nodes["path"].append(nodes["exec_path"][0])
-        nodes["exec_path"].pop(0)
-        print(nodes)
         if HelpFormatter.first_node_is_help(exec_path):
             return f"[{self.__class__.__name__}]\n{self.name}: {self.help}\n\n[Children]\n{self._get_help_messages}"
         if not HelpFormatter.is_help_message(exec_path):
             self._execute_on_calls()
+        nodes["path"].append(nodes["exec_path"][0])
+        nodes["exec_path"].pop(0)
         if not child:
             return None
         return child.forward(nodes)

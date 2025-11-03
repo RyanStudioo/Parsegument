@@ -19,3 +19,4 @@ def foo2(bar: str):
     print(bar)
 
 parser.execute("Parsegument group -h")
+print(len(group))

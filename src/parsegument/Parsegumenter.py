@@ -45,8 +45,7 @@ class Parsegumenter(BaseGroup):
         """Checks if a child with the name of the first list item exists, then executes the child
         It will also automatically check if it is valid with the prefix and name"""
         parsed = shlex.split(command) if isinstance(command, str) else command
-        nodes = {"path": [], "exec_path": []}
-        nodes["exec_path"] = parsed
+        nodes = {"path": [], "exec_path": parsed}
         if not self._check_valid(parsed): return None
         if self.name:
             nodes["path"].append(parsed[0])
@@ -56,7 +55,6 @@ class Parsegumenter(BaseGroup):
             parsed = shlex.split(command) if isinstance(command, str) else command
             command_string = " ".join(parsed[:-1])
             value = f"Usage: {command_string} \n\n{value}"
-            print(value)
         return value
 
     def run(self) -> Optional[Any]:
