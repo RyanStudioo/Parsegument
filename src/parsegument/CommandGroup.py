@@ -19,4 +19,4 @@ class CommandGroup(BaseGroup):
         child_commands = list(self._get_commands())
         methods = [getattr(self, i) for i in child_commands]
         for method in methods:
-            self.command(method)
+            self.command()(method)

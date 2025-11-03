@@ -6,17 +6,16 @@ class ChildGroup(CommandGroup):
         super().__init__("ChildGroup")
 
     @staticmethod
+    @pg.argument("test", int)
     def method_thing(test:str):
-        return test + ", This is a method thing"
-
-    def initialise(self):
-        method_thing = pg.Command("method_thing", self.method_thing)
-        method_thing.add_parameter(pg.Argument("test", str))
-        self.add_child(method_thing)
+        if type(test) == str:
+            return test + ", This is a method thing"
+        elif type(test) == int:
+            return test + 2
 
 parser = pg.Parsegumenter()
 group = ChildGroup()
 group.initialise()
 parser.add_child(group)
-print(parser.execute("ChildGroup method_thing testfrfr"))
+print(parser.execute("ChildGroup method_thing 10"))
 print(parser.schema)
