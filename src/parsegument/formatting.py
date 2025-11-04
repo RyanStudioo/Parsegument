@@ -1,21 +1,18 @@
 from typing import Callable
 from string import Template
 
+from parsegument.Node import CommandNode
+
+
 class HelpFormatter:
     triggers = ["-help", "--help", "-h"]
+    schema: str = """
+Usage: {usage} [OPTIONS]
+[TYPE {pg_type}] {description}
 
-    def __init__(self,
-                 schema: str =
-                 """
-                 Usage: {usage}
-                 
-                 {description}
-                 
-                 [Options]
-                 {options}
-                 """
-                 ):
-        self.schema = schema
+[OPTIONS]
+{options}
+"""
 
     @classmethod
     def is_help_message(cls, nodes: list[str]):
@@ -25,5 +22,12 @@ class HelpFormatter:
     def first_node_is_help(cls, nodes: list[str]):
         return nodes[0] in cls.triggers
 
-    def create_message(self, usage: str, description: str, options: str):
-        return self.schema.format(usage=usage, description=description, options=options)
+    @classmethod
+    def format_with_schema(cls, usage: str, pg_type: str, description: str, options: str):
+        return cls.schema.format(usage=usage, pg_type=pg_type, description=description, options=options)
+
+    @classmethod
+    def format(cls, path: list[str], description: str, pg_type: str, options: list[CommandNode]) -> str:
+        path = " ".join(path)
+        options = "\n".join([f"{i.name}: {i.help}" for i in options])
+        return cls.format_with_schema(path, pg_type, description, options)

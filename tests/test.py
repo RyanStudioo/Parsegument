@@ -18,5 +18,5 @@ def foo(bar: str):
 def foo2(bar: str):
     print(bar)
 
-parser.execute("Parsegument group -h")
+print(parser.execute("Parsegument group"))
 print(len(group))

@@ -27,6 +27,10 @@ class Command(CommandNode):
         return self.__len__()
 
     @property
+    def flatten_params(self):
+        return list(self.parameters["args"].values()) + list(self.parameters["kwargs"].values())
+
+    @property
     def _get_help_messages(self) -> str:
         items = list(self.parameters["args"].items()) + list(self.parameters["kwargs"].items())
         max_len = max(len(key) for key, _ in items)
@@ -41,10 +45,10 @@ class Command(CommandNode):
 
     def forward(self, nodes:dict[str, list[str]]) -> Any:
         """Converts all arguments in nodes into its defined types, and executes the linked executable"""
-        if HelpFormatter.is_help_message(nodes):
-            return f"[Command]\n{self.name}: {self.help}\n\n[Parameters]\n{self._get_help_messages}"
         path = nodes["path"]
         exec_path = nodes["exec_path"]
+        if HelpFormatter.is_help_message(exec_path):
+            return HelpFormatter.format(path, self.help, "Command", self.flatten_params)
         args_length = len(self.parameters["args"])
         args = exec_path[:args_length]
         args = {name:args[idx] for idx, name in enumerate(self.parameters["args"].keys())}

@@ -51,10 +51,6 @@ class Parsegumenter(BaseGroup):
             nodes["path"].append(parsed[0])
             parsed.pop(0)
         value = self.forward(nodes)
-        if value and HelpFormatter.is_help_message(parsed):
-            parsed = shlex.split(command) if isinstance(command, str) else command
-            command_string = " ".join(parsed[:-1])
-            value = f"Usage: {command_string} \n\n{value}"
         return value
 
     def run(self) -> Optional[Any]:
