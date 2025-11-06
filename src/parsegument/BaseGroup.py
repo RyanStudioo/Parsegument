@@ -98,7 +98,10 @@ class BaseGroup(CommandNode):
         nodes["path"].append(nodes["exec_path"][0])
         nodes["exec_path"].pop(0)
         if not child:
-            return None
+            if type(child) == Command and not child.parameters:
+                return None
+            elif isinstance(child, BaseGroup) and not child.children:
+                return None
         return child.forward(nodes)
 
 
