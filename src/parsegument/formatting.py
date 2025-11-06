@@ -5,6 +5,17 @@ from parsegument.Node import CommandNode
 
 
 class HelpFormatter:
+    """
+    Class used for all Help Message Formatting
+
+    -----
+    HelpFormatter.triggers is a list of command parameters that trigger a help message to be returned
+
+    HelpFormatter.schema defines how a help message is formatted:
+    {usage} is the path of the command
+    {pg_type} is the type of the command parameter (eg Command, CommandGroup, etc)
+    {options} returns all valid paths
+    """
     triggers = ["-help", "--help", "-h"]
     schema: str = """
 Usage: {usage} [OPTIONS]
