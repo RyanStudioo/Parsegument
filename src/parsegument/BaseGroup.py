@@ -90,11 +90,12 @@ class BaseGroup(CommandNode):
     def forward(self, nodes: dict[str, list[str]]) -> Any:
         path = nodes["path"]
         exec_path = nodes["exec_path"]
-        child = self.children.get(exec_path[0])
-        if HelpFormatter.first_node_is_help(exec_path):
+
+        if not exec_path or HelpFormatter.first_node_is_help(exec_path):
             return HelpFormatter.format(path, self.help, self.__class__.__name__, self.children.values())
         if not HelpFormatter.is_help_message(exec_path):
             self._execute_on_calls()
+        child = self.children.get(exec_path[0])
         nodes["path"].append(nodes["exec_path"][0])
         nodes["exec_path"].pop(0)
         if not child:
