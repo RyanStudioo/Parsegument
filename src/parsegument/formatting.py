@@ -18,11 +18,13 @@ class HelpFormatter:
     """
     triggers = ["-help", "--help", "-h"]
     schema: str = """
+-----
 Usage: {usage} [OPTIONS]
 [TYPE {pg_type}] {description}
 
 [OPTIONS]
 {options}
+-----
 """
 
     @classmethod

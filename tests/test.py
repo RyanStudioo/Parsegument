@@ -20,3 +20,4 @@ def foo2(bar: str):
 
 print(parser.execute("Parsegument group"))
 print(len(group))
+print(group.length)
